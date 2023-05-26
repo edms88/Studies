@@ -1,0 +1,133 @@
+import tkinter as tk
+
+
+class Projeto:
+    def __init__(self, nome, descricao, data_inicio, data_fim):
+        self.nome = nome
+        self.descricao = descricao
+        self.data_inicio = data_inicio
+        self.data_fim = data_fim
+        self.tarefas = []
+
+    def adicionar_tarefa(self, tarefa):
+        self.tarefas.append(tarefa)
+
+    def listar_tarefas(self):
+        for tarefa in self.tarefas:
+            print(f"Tarefa: {tarefa.nome} - Concluída: {tarefa.concluida}")
+
+
+class Tarefa:
+    def __init__(self, nome, descricao, concluida=False):
+        self.nome = nome
+        self.descricao = descricao
+        self.concluida = concluida
+
+    def marcar_concluida(self):
+        self.concluida = True
+
+
+def criar_projeto():
+    nome_projeto = entry_nome.get()
+    descricao_projeto = entry_descricao.get()
+    data_inicio_projeto = entry_data_inicio.get()
+    data_fim_projeto = entry_data_fim.get()
+
+    projeto = Projeto(nome_projeto, descricao_projeto, data_inicio_projeto, data_fim_projeto)
+    projetos.append(projeto)
+    label_status.config(text=f"Projeto '{projeto.nome}' criado com sucesso!")
+
+
+def adicionar_tarefa():
+    nome_projeto = entry_nome_projeto.get()
+    for projeto in projetos:
+        if projeto.nome == nome_projeto:
+            nome_tarefa = entry_nome_tarefa.get()
+            descricao_tarefa = entry_descricao_tarefa.get()
+
+            tarefa = Tarefa(nome_tarefa, descricao_tarefa)
+            projeto.adicionar_tarefa(tarefa)
+            label_status.config(text=f"Tarefa '{tarefa.nome}' adicionada ao projeto '{projeto.nome}'!")
+
+
+def listar_projetos_tarefas():
+    text_projetos_tarefas.delete(1.0, tk.END)
+    for projeto in projetos:
+        text_projetos_tarefas.insert(tk.END, f"Projeto: {projeto.nome}\n")
+        for tarefa in projeto.tarefas:
+            text_projetos_tarefas.insert(tk.END, f"Tarefa: {tarefa.nome} - Concluída: {tarefa.concluida}\n")
+        text_projetos_tarefas.insert(tk.END, "\n")
+
+
+projetos = []
+
+# Cria a janela principal
+root = tk.Tk()
+root.title("Gerenciador de Projetos")
+
+# Cria os widgets
+label_nome = tk.Label(root, text="Nome do projeto:")
+entry_nome = tk.Entry(root)
+
+label_descricao = tk.Label(root, text="Descrição do projeto:")
+entry_descricao = tk.Entry(root)
+
+label_data_inicio = tk.Label(root, text="Data de início do projeto:")
+entry_data_inicio = tk.Entry(root)
+
+label_data_fim = tk.Label(root, text="Data de término do projeto:")
+entry_data_fim = tk.Entry(root)
+
+button_criar_projeto = tk.Button(root, text="Criar Projeto", command=criar_projeto)
+
+label_nome_projeto = tk.Label(root, text="Nome do projeto:")
+entry_nome_projeto = tk.Entry(root)
+
+label_nome_tarefa = tk.Label(root, text="Nome da tarefa:")
+entry_nome_tarefa = tk.Entry(root)
+
+label_descricao_tarefa = tk.Label(root, text="Descrição da tarefa:")
+entry_descricao_tarefa = tk.Entry(root)
+
+button_adicionar_tarefa = tk.Button(root, text="Adicionar Tarefa", command=adicionar_tarefa)
+
+button_listar_projetos_tarefas = tk.Button(root, text="Listar Projetos e Tarefas", command=listar_projetos_tarefas)
+
+label_status = tk.Label(root, text="")
+
+text_projetos_tarefas = tk.Text(root, width=40, height=10)
+
+# Posiciona os widgets na janela
+label_nome.grid(row=0, column=0, sticky="e")
+entry_nome.grid(row=0, column=1)
+
+label_descricao.grid(row=1, column=0, sticky="e")
+entry_descricao.grid(row=1, column=1)
+
+label_data_inicio.grid(row=2, column=0, sticky="e")
+entry_data_inicio.grid(row=2, column=1)
+
+label_data_fim.grid(row=3, column=0, sticky="e")
+entry_data_fim.grid(row=3, column=1)
+
+button_criar_projeto.grid(row=4, column=1)
+
+label_nome_projeto.grid(row=5, column=0, sticky="e")
+entry_nome_projeto.grid(row=5, column=1)
+
+label_nome_tarefa.grid(row=6, column=0, sticky="e")
+entry_nome_tarefa.grid(row=6, column=1)
+
+label_descricao_tarefa.grid(row=7, column=0, sticky="e")
+entry_descricao_tarefa.grid(row=7, column=1)
+
+button_adicionar_tarefa.grid(row=8, column=1)
+
+button_listar_projetos_tarefas.grid(row=9, column=1)
+
+label_status.grid(row=10, column=0, columnspan=2)
+
+text_projetos_tarefas.grid(row=11, column=0, columnspan=2)
+
+# Inicia o loop principal da interface gráfica
+root.mainloop()
